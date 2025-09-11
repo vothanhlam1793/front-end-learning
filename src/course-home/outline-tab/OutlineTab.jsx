@@ -30,41 +30,30 @@ import ProctoringInfoPanel from './widgets/ProctoringInfoPanel';
 import AccountActivationAlert from '../../alerts/logistration-alert/AccountActivationAlert';
 
 const OutlineTab = ({ intl }) => {
-  const {
-    courseId,
-    proctoringPanelStatus,
-  } = useSelector(state => state.courseHome);
+  const { courseId, proctoringPanelStatus } = useSelector(
+    state => state.courseHome,
+  );
 
   const {
-    isSelfPaced,
-    org,
-    title,
-    userTimezone,
-  } = useModel('courseHomeMeta', courseId);
+    isSelfPaced, org, title, userTimezone,
+  } = useModel(
+    'courseHomeMeta',
+    courseId,
+  );
 
   const {
     accessExpiration,
-    courseBlocks: {
-      courses,
-      sections,
-    },
-    courseGoals: {
-      selectedGoal,
-      weeklyLearningGoalEnabled,
-    } = {},
+    courseBlocks: { courses, sections },
+    courseGoals: { selectedGoal, weeklyLearningGoalEnabled } = {},
     datesBannerInfo,
-    datesWidget: {
-      courseDateBlocks,
-    },
+    datesWidget: { courseDateBlocks },
     enableProctoredExams,
     offer,
     timeOffsetMillis,
     verifiedMode,
   } = useModel('outline', courseId);
 
-  const {
-    marketingUrl,
-  } = useModel('coursewareMeta', courseId);
+  const { marketingUrl } = useModel('coursewareMeta', courseId);
 
   const [expandAll, setExpandAll] = useState(false);
   const navigate = useNavigate();
@@ -83,7 +72,8 @@ const OutlineTab = ({ intl }) => {
 
   const rootCourseId = courses && Object.keys(courses)[0];
 
-  const hasDeadlines = courseDateBlocks && courseDateBlocks.some(x => x.dateType === 'assignment-due-date');
+  const hasDeadlines = courseDateBlocks
+    && courseDateBlocks.some(x => x.dateType === 'assignment-due-date');
 
   const logUpgradeToShiftDatesLinkClick = () => {
     sendTrackEvent('edx.bi.ecommerce.upsell_links_clicked', {
@@ -97,7 +87,9 @@ const OutlineTab = ({ intl }) => {
 
   const isEnterpriseUser = () => {
     const authenticatedUser = getAuthenticatedUser();
-    const userRoleNames = authenticatedUser ? authenticatedUser.roles.map(role => role.split(':')[0]) : [];
+    const userRoleNames = authenticatedUser
+      ? authenticatedUser.roles.map(role => role.split(':')[0])
+      : [];
 
     return userRoleNames.includes('enterprise_learner');
   };
@@ -126,9 +118,14 @@ const OutlineTab = ({ intl }) => {
 
   return (
     <>
-      <div data-learner-type={learnerType} className="row w-100 mx-0 my-3 justify-content-between">
+      <div
+        data-learner-type={learnerType}
+        className="row w-100 mx-0 my-3 justify-content-between"
+      >
         <div className="col-12 col-sm-auto p-0">
-          <div role="heading" aria-level="1" className="h2">{title}</div>
+          <div role="heading" aria-level="1" className="h2">
+            {title}
+          </div>
         </div>
       </div>
       <div className="row course-outline-tab">
@@ -155,7 +152,10 @@ const OutlineTab = ({ intl }) => {
           {isSelfPaced && hasDeadlines && (
             <>
               <ShiftDatesAlert model="outline" fetch={fetchOutlineTab} />
-              <UpgradeToShiftDatesAlert model="outline" logUpgradeLinkClick={logUpgradeToShiftDatesLinkClick} />
+              <UpgradeToShiftDatesAlert
+                model="outline"
+                logUpgradeLinkClick={logUpgradeToShiftDatesLinkClick}
+              />
             </>
           )}
           <StartOrResumeCourseCard />
@@ -164,13 +164,21 @@ const OutlineTab = ({ intl }) => {
             <>
               <div className="row w-100 m-0 mb-3 justify-content-end">
                 <div className="col-12 col-md-auto p-0">
-                  <Button variant="outline-primary" block onClick={() => { setExpandAll(!expandAll); }}>
-                    {expandAll ? intl.formatMessage(messages.collapseAll) : intl.formatMessage(messages.expandAll)}
+                  <Button
+                    variant="outline-primary"
+                    block
+                    onClick={() => {
+                      setExpandAll(!expandAll);
+                    }}
+                  >
+                    {expandAll
+                      ? intl.formatMessage(messages.collapseAll)
+                      : intl.formatMessage(messages.expandAll)}
                   </Button>
                 </div>
               </div>
               <ol id="courseHome-outline" className="list-unstyled">
-                {courses[rootCourseId].sectionIds.map((sectionId) => (
+                {courses[rootCourseId].sectionIds.map(sectionId => (
                   <Section
                     key={sectionId}
                     courseId={courseId}
@@ -183,16 +191,25 @@ const OutlineTab = ({ intl }) => {
             </>
           )}
         </div>
-        {rootCourseId && (
+        {rootCourseId && false && (
           <div className="col col-12 col-md-4">
             <ProctoringInfoPanel />
-            { /** Defer showing the goal widget until the ProctoringInfoPanel has resolved or has been determined as
-             disabled to avoid components bouncing around too much as screen is rendered */ }
-            {(!enableProctoredExams || proctoringPanelStatus === 'loaded') && weeklyLearningGoalEnabled && (
-              <WeeklyLearningGoalCard
-                daysPerWeek={selectedGoal && 'daysPerWeek' in selectedGoal ? selectedGoal.daysPerWeek : null}
-                subscribedToReminders={selectedGoal && 'subscribedToReminders' in selectedGoal ? selectedGoal.subscribedToReminders : false}
-              />
+            {/** Defer showing the goal widget until the ProctoringInfoPanel has resolved or has been determined as
+             disabled to avoid components bouncing around too much as screen is rendered */}
+            {(!enableProctoredExams || proctoringPanelStatus === 'loaded')
+              && weeklyLearningGoalEnabled && (
+                <WeeklyLearningGoalCard
+                  daysPerWeek={
+                    selectedGoal && 'daysPerWeek' in selectedGoal
+                      ? selectedGoal.daysPerWeek
+                      : null
+                  }
+                  subscribedToReminders={
+                    selectedGoal && 'subscribedToReminders' in selectedGoal
+                      ? selectedGoal.subscribedToReminders
+                      : false
+                  }
+                />
             )}
             <CourseTools />
             <PluginSlot
@@ -206,7 +223,9 @@ const OutlineTab = ({ intl }) => {
                 offer={offer}
                 verifiedMode={verifiedMode}
                 accessExpiration={accessExpiration}
-                contentTypeGatingEnabled={datesBannerInfo.contentTypeGatingEnabled}
+                contentTypeGatingEnabled={
+                  datesBannerInfo.contentTypeGatingEnabled
+                }
                 marketingUrl={marketingUrl}
                 upsellPageName="course_home"
                 userTimezone={userTimezone}

@@ -6,13 +6,9 @@ import { OuterExamTimer } from '@edx/frontend-lib-special-exams';
 
 import TabPage from './TabPage';
 
-const TabContainer = (props) => {
+const TabContainer = props => {
   const {
-    children,
-    fetch,
-    slice,
-    tab,
-    isProgressTab,
+    children, fetch, slice, tab, isProgressTab,
   } = props;
 
   const { courseId: courseIdFromUrl, targetUserId } = useParams();
@@ -25,15 +21,12 @@ const TabContainer = (props) => {
     } else {
       dispatch(fetch(courseIdFromUrl));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseIdFromUrl, targetUserId]);
 
   // The courseId from the store is the course we HAVE loaded.  If the URL changes,
   // we don't want the application to adjust to it until it has actually loaded the new data.
-  const {
-    courseId,
-    courseStatus,
-  } = useSelector(state => state[slice]);
+  const { courseId, courseStatus } = useSelector(state => state[slice]);
 
   return (
     <TabPage
