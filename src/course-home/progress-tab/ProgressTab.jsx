@@ -1,37 +1,36 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { breakpoints, useWindowSize } from '@openedx/paragon';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { breakpoints, useWindowSize } from '@openedx/paragon'
 
-import CertificateStatus from './certificate-status/CertificateStatus';
-import CourseCompletion from './course-completion/CourseCompletion';
-import CourseGrade from './grades/course-grade/CourseGrade';
-import DetailedGrades from './grades/detailed-grades/DetailedGrades';
-import GradeSummary from './grades/grade-summary/GradeSummary';
-import ProgressHeader from './ProgressHeader';
-import RelatedLinks from './related-links/RelatedLinks';
+import CertificateStatus from './certificate-status/CertificateStatus'
+import CourseCompletion from './course-completion/CourseCompletion'
+import CourseGrade from './grades/course-grade/CourseGrade'
+import DetailedGrades from './grades/detailed-grades/DetailedGrades'
+import GradeSummary from './grades/grade-summary/GradeSummary'
+import ProgressHeader from './ProgressHeader'
+import RelatedLinks from './related-links/RelatedLinks'
 
-import { useModel } from '../../generic/model-store';
+import { useModel } from '../../generic/model-store'
 
 const ProgressTab = () => {
-  const {
-    courseId,
-  } = useSelector(state => state.courseHome);
+  const { courseId } = useSelector(state => state.courseHome)
 
-  const {
-    gradesFeatureIsFullyLocked, disableProgressGraph,
-  } = useModel('progress', courseId);
+  const { gradesFeatureIsFullyLocked, disableProgressGraph } = useModel(
+    'progress',
+    courseId
+  )
 
-  const applyLockedOverlay = gradesFeatureIsFullyLocked ? 'locked-overlay' : '';
+  const applyLockedOverlay = gradesFeatureIsFullyLocked ? 'locked-overlay' : ''
 
-  const windowWidth = useWindowSize().width;
+  const windowWidth = useWindowSize().width
   if (windowWidth === undefined) {
     // Bail because we don't want to load <CertificateStatus/> twice, emitting 'visited' events both times.
     // This is a hacky solution, since the user can resize the screen and still get two visited events.
     // But I'm leaving a larger refactor as an exercise to a future reader.
-    return null;
+    return null
   }
 
-  const wideScreen = windowWidth >= breakpoints.large.minWidth;
+  const wideScreen = windowWidth >= breakpoints.large.minWidth
   return (
     <>
       <ProgressHeader />
@@ -41,7 +40,10 @@ const ProgressTab = () => {
           {!disableProgressGraph && <CourseCompletion />}
           {!wideScreen && <CertificateStatus />}
           <CourseGrade />
-          <div className={`grades my-4 p-4 rounded raised-card ${applyLockedOverlay}`} aria-hidden={gradesFeatureIsFullyLocked}>
+          <div
+            className={`grades my-4 p-4 rounded raised-card ${applyLockedOverlay}`}
+            aria-hidden={gradesFeatureIsFullyLocked}
+          >
             <GradeSummary />
             <DetailedGrades />
           </div>
@@ -50,11 +52,11 @@ const ProgressTab = () => {
         {/* Side panel */}
         <div className="col-12 col-md-4 p-0 px-md-4">
           {wideScreen && <CertificateStatus />}
-          <RelatedLinks />
+          {/* <RelatedLinks /> */}
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ProgressTab;
+export default ProgressTab

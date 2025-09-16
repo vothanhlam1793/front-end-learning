@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { StatefulButton } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { useDispatch } from 'react-redux';
-import BookmarkOutlineIcon from './BookmarkOutlineIcon';
-import BookmarkFilledIcon from './BookmarkFilledIcon';
-import { removeBookmark, addBookmark } from './data/thunks';
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { StatefulButton } from '@openedx/paragon'
+import { FormattedMessage } from '@edx/frontend-platform/i18n'
+import { useDispatch } from 'react-redux'
+import BookmarkOutlineIcon from './BookmarkOutlineIcon'
+import BookmarkFilledIcon from './BookmarkFilledIcon'
+import { removeBookmark, addBookmark } from './data/thunks'
 
 const addBookmarkLabel = (
   <FormattedMessage
@@ -13,7 +13,7 @@ const addBookmarkLabel = (
     defaultMessage="Bookmark this page"
     description="The button to bookmark a page"
   />
-);
+)
 
 const hasBookmarkLabel = (
   <FormattedMessage
@@ -21,23 +21,21 @@ const hasBookmarkLabel = (
     defaultMessage="Bookmarked"
     description="The button to show a page is bookmarked and the button to remove that bookmark"
   />
-);
+)
 
-const BookmarkButton = ({
-  isBookmarked, isProcessing, unitId,
-}) => {
-  const bookmarkState = isBookmarked ? 'bookmarked' : 'default';
-  const state = isProcessing ? `${bookmarkState}Processing` : bookmarkState;
+const BookmarkButton = ({ isBookmarked, isProcessing, unitId }) => {
+  const bookmarkState = isBookmarked ? 'bookmarked' : 'default'
+  const state = isProcessing ? `${bookmarkState}Processing` : bookmarkState
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const toggleBookmark = useCallback(() => {
     if (isBookmarked) {
-      dispatch(removeBookmark(unitId));
+      dispatch(removeBookmark(unitId))
     } else {
-      dispatch(addBookmark(unitId));
+      dispatch(addBookmark(unitId))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBookmarked, unitId]);
+  }, [isBookmarked, unitId])
 
   return (
     <StatefulButton
@@ -50,26 +48,26 @@ const BookmarkButton = ({
         default: addBookmarkLabel,
         defaultProcessing: addBookmarkLabel,
         bookmarked: hasBookmarkLabel,
-        bookmarkedProcessing: hasBookmarkLabel,
+        bookmarkedProcessing: hasBookmarkLabel
       }}
       icons={{
         default: <BookmarkOutlineIcon className="text-primary" />,
         defaultProcessing: <BookmarkOutlineIcon className="text-primary" />,
         bookmarked: <BookmarkFilledIcon className="text-primary" />,
-        bookmarkedProcessing: <BookmarkFilledIcon className="text-primary" />,
+        bookmarkedProcessing: <BookmarkFilledIcon className="text-primary" />
       }}
     />
-  );
-};
+  )
+}
 
 BookmarkButton.propTypes = {
   unitId: PropTypes.string.isRequired,
   isBookmarked: PropTypes.bool,
-  isProcessing: PropTypes.bool.isRequired,
-};
+  isProcessing: PropTypes.bool.isRequired
+}
 
 BookmarkButton.defaultProps = {
-  isBookmarked: false,
-};
+  isBookmarked: false
+}
 
-export default BookmarkButton;
+export default BookmarkButton
